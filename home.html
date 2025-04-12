@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mac's Gaming Zone</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+    }
+
+    body {
+      background: #121212;
+      color: #f0f0f0;
+      font-family: 'Orbitron', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 0.5rem;
+      color: #f8b400; /* Gold color for emphasis */
+    }
+
+    p {
+      font-size: 1.1rem;
+      max-width: 600px;
+      margin: 1rem auto;
+      line-height: 1.6;
+      color: #bbb;
+    }
+
+    .logos {
+      margin-top: 1rem;
+    }
+
+    .logos img {
+      width: 100px; /* Adjust logo size */
+      margin: 10px;
+      border-radius: 10px;
+    }
+
+    .links {
+      margin-top: 2rem;
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .link-btn {
+      padding: 0.75rem 1.5rem;
+      background: #333;
+      border: 2px solid #66ff66; /* Vibrant green for link buttons */
+      color: #66ff66;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .link-btn:hover {
+      background: #66ff66;
+      color: #121212;
+    }
+
+    .contact-section {
+      margin-top: 4rem;
+      width: 100%;
+      max-width: 600px;
+      padding: 1rem;
+      background: #1a1a1a;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 255, 255, 0.1);
+    }
+
+    .contact-section h2 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      color: #00b3b3; /* Teal for section headers */
+    }
+
+    .contact-section form input,
+    .contact-section form textarea,
+    .contact-section form select {
+      width: 100%;
+      padding: 0.75rem;
+      margin: 0.5rem 0;
+      background: #333;
+      color: #f0f0f0;
+      border: 2px solid #444;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+
+    .contact-section form button {
+      padding: 0.75rem 1.5rem;
+      background: #f8b400; /* Gold background for submit button */
+      color: #121212;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .contact-section form button:hover {
+      background: #ffcc00; /* Slightly lighter gold on hover */
+    }
+
+    .file-input {
+      padding: 0.75rem;
+      background: #333;
+      color: #f0f0f0;
+      border: 2px solid #444;
+      border-radius: 8px;
+      font-size: 1rem;
+      margin-top: 1rem;
+    }
+
+    /* Border and hover effects for form inputs */
+    input, select, textarea {
+      border-color: #444;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: #00b3b3; /* Teal on focus for inputs */
+      outline: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Personal Logo -->
+  <div class="logos">
+    <img src="https://cdn.discordapp.com/attachments/1344648830389452801/1360646785198063647/macf.png?ex=67fbe091&is=67fa8f11&hm=4a9625eff6cd356c431f5a96d5021d7803babbb37535368a2362fb2966f33be9&" alt="Mac's Logo">
+  </div>
+
+  <h1>Hey! I’m Mac</h1>
+  <p>
+    A gamer with a passion for coding and building cool stuff. Whether it’s Discord bots, late-night grind sessions, or creating new tech, I’m always up to something.<br><br>
+    I also run Internal Affairs over at Bayview, where I keep things in check and make sure the streets stay clean. From investigating misconduct to ensuring the community is always operating smoothly, my role is crucial in maintaining a safe and fair environment for everyone involved. Whether I’m catching rule-breakers or handling reports, I’m always making sure Bayview is running like a well-oiled machine.
+  </p>
+
+  <div class="links">
+    <a class="link-btn" href="https://discord.com/users/719648115639975946" target="_blank">My Discord</a>
+    <a class="link-btn" href="https://discord.gg/cmTarTXAYA" target="_blank">Join Bayview Discord</a>
+  </div>
+
+  <!-- Contact Section -->
+  <div class="contact-section">
+    <h2>Contact Me</h2>
+    <form id="contactForm">
+      <input type="text" id="username" placeholder="Your Discord Name" required>
+      <input type="text" id="discordId" placeholder="Your Discord ID" required>
+      <textarea id="message" placeholder="Your Message" rows="4" required></textarea>
+      
+      <!-- Report Type Dropdown -->
+      <select id="reportType" required>
+        <option value="General Report">General Report</option>
+        <option value="Bug Report">Bug Report</option>
+        <option value="Player Misconduct">Player Misconduct</option>
+        <option value="Clip Submission">Clip Submission</option>
+      </select>
+      
+      <!-- File Upload for Clips -->
+      <input type="file" id="clip" class="file-input" accept="video/*, image/*">
+
+      <button type="submit">Send Message</button>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById('contactForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+      
+      const username = document.getElementById('username').value;
+      const discordId = document.getElementById('discordId').value;
+      const message = document.getElementById('message').value;
+      const reportType = document.getElementById('reportType').value;
+      const clip = document.getElementById('clip').files[0];
+
+      const webhookURL = "https://discord.com/api/webhooks/1360647445997944992/OHLNqMTf2BQeNwMHjhUe260pEr9na4ux0FiARoaT5uNizWrlAUPSdm-aDqNtb6xrvgfn";
+      const yourDiscordID = "719648115639975946"; // Replace with your Discord user ID
+
+      // Handle file upload (clips or images)
+      let fileUrl = "";
+      if (clip) {
+        const formData = new FormData();
+        formData.append('file', clip);
+
+        // You can use a service like Discord's file upload endpoint or a third-party server for uploading the file.
+        // This is just an example assuming file upload is handled (it won't work without proper file upload logic). 
+
+        // After uploading, you would get a URL for the file.
+        fileUrl = "URL_TO_UPLOADED_FILE";
+      }
+
+      const payload = {
+        content: `<@${yourDiscordID}>`, // Pinging you directly
+        username: username,
+        embeds: [
+          {
+            title: `${reportType} Report`,
+            description: message,
+            fields: [
+              {
+                name: 'Discord Username:',
+                value: username
+              },
+              {
+                name: 'Discord ID:',
+                value: discordId
+              },
+              {
+                name: 'Type of Report:',
+                value: reportType
+              },
+              {
+                name: 'Clip (if any):',
+                value: fileUrl ? fileUrl : "No clip uploaded"
+              }
+            ]
+          }
+        ]
+      };
+
+      fetch(webhookURL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      })
+      .then(response => response.json())
+      .then(data => {
+        alert('Message sent successfully!');
+        document.getElementById('username').value = '';
+        document.getElementById('discordId').value = '';
+        document.getElementById('message').value = '';
+        document.getElementById('clip').value = ''; // Clear the clip field
+      })
+      .catch(error => {
+        alert('There was an error sending the message. Please try again later.');
+      });
+    });
+  </script>
+
+</body>
+</html>
