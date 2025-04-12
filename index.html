@@ -180,8 +180,8 @@
     const reportType = document.getElementById('reportType').value;
     const clip = document.getElementById('clip').files[0];
 
-    const webhookURL = "https://discord.com/api/webhooks/1360647445997944992/OHLNqMTf2BQeNwMHjhUe260pEr9na4ux0FiARoaT5uNizWrlAUPSdm-aDqNtb6xrvgfn";
-    const yourDiscordID = "719648115639975946";
+    const webhookURL = "YOUR_WEBHOOK_URL";  // Replace with your webhook URL
+    const yourDiscordID = "YOUR_DISCORD_ID"; // Replace with your Discord ID
 
     const urlRegex = /(https?:\/\/[^\s]+)/g;
     const foundLinks = message.match(urlRegex);
@@ -235,8 +235,7 @@
       alert('Something went wrong.');
     });
   });
-</script>
-
+  </script>
 
 </body>
 </html>
