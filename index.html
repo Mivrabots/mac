@@ -178,80 +178,66 @@
   </div>
 
   <script>
-    document.getElementById('contactForm').addEventListener('submit', function(event) {
-      event.preventDefault();
-      
-      const username = document.getElementById('username').value;
-      const discordId = document.getElementById('discordId').value;
-      const message = document.getElementById('message').value;
-      const reportType = document.getElementById('reportType').value;
-      const clip = document.getElementById('clip').files[0];
+  document.getElementById('contactForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    
+    const username = document.getElementById('username').value;
+    const discordId = document.getElementById('discordId').value;
+    const message = document.getElementById('message').value;
+    const reportType = document.getElementById('reportType').value;
+    const clip = document.getElementById('clip').files[0];
 
-      const webhookURL = "https://discord.com/api/webhooks/1360647445997944992/OHLNqMTf2BQeNwMHjhUe260pEr9na4ux0FiARoaT5uNizWrlAUPSdm-aDqNtb6xrvgfn";
-      const yourDiscordID = "719648115639975946"; // Replace with your Discord user ID
+    const webhookURL = "https://discord.com/api/webhooks/1360647445997944992/OHLNqMTf2BQeNwMHjhUe260pEr9na4ux0FiARoaT5uNizWrlAUPSdm-aDqNtb6xrvgfn";
+    const yourDiscordID = "719648115639975946"; // Your Discord ID for ping
 
-      // Handle file upload (clips or images)
-      let fileUrl = "";
-      if (clip) {
-        const formData = new FormData();
-        formData.append('file', clip);
+    const formData = new FormData();
 
-        // You can use a service like Discord's file upload endpoint or a third-party server for uploading the file.
-        // This is just an example assuming file upload is handled (it won't work without proper file upload logic). 
+    // If file exists, append it
+    if (clip) {
+      formData.append('file', clip);
+    }
 
-        // After uploading, you would get a URL for the file.
-        fileUrl = "URL_TO_UPLOADED_FILE";
-      }
+    // Prepare embed
+    const embed = {
+      content: `<@${yourDiscordID}>`,
+      embeds: [
+        {
+          title: `${reportType} Report`,
+          description: message,
+          fields: [
+            { name: 'Discord Username:', value: username },
+            { name: 'Discord ID:', value: discordId },
+            { name: 'Type of Report:', value: reportType },
+            { name: 'Clip (if any):', value: clip ? `Attached Below` : "No clip uploaded" }
+          ],
+          image: clip ? { url: `attachment://${clip.name}` } : undefined // Show image/video if possible
+        }
+      ]
+    };
 
-      const payload = {
-        content: `<@${yourDiscordID}>`, // Pinging you directly
-        username: username,
-        embeds: [
-          {
-            title: `${reportType} Report`,
-            description: message,
-            fields: [
-              {
-                name: 'Discord Username:',
-                value: username
-              },
-              {
-                name: 'Discord ID:',
-                value: discordId
-              },
-              {
-                name: 'Type of Report:',
-                value: reportType
-              },
-              {
-                name: 'Clip (if any):',
-                value: fileUrl ? fileUrl : "No clip uploaded"
-              }
-            ]
-          }
-        ]
-      };
+    // Add embed JSON to form data
+    formData.append('payload_json', new Blob([JSON.stringify(embed)], { type: 'application/json' }));
 
-      fetch(webhookURL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(payload)
-      })
-      .then(response => response.json())
-      .then(data => {
+    // Send to Discord webhook
+    fetch(webhookURL, {
+      method: 'POST',
+      body: formData
+    })
+    .then(response => {
+      if (response.ok) {
         alert('Message sent successfully!');
-        document.getElementById('username').value = '';
-        document.getElementById('discordId').value = '';
-        document.getElementById('message').value = '';
-        document.getElementById('clip').value = ''; // Clear the clip field
-      })
-      .catch(error => {
-        alert('There was an error sending the message. Please try again later.');
-      });
+        document.getElementById('contactForm').reset();
+      } else {
+        alert('There was an error sending the message.');
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      alert('Something went wrong.');
     });
-  </script>
+  });
+</script>
+
 
 </body>
 </html>
