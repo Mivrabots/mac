@@ -4,6 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Mac At BayView Roleplay</title>
+  <link rel="icon" href="https://cdn.discordapp.com/attachments/1344648830880190556/1360707522016706670/macf.png?ex=67fc1921&is=67fac7a1&hm=8b43d7d83d79df984578a895e895a94e2071a4769a7b459df54e35e5b1d91ea5&" />
+  <meta name="description" content="Mac's corner on BayView Roleplay. Submit reports, clips, and reach out directly.">
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -105,7 +107,6 @@
       border-radius: 8px;
       cursor: pointer;
       transition: background 0.3s;
-      display: inline-block;
     }
 
     .contact-section form button:hover {
@@ -122,6 +123,11 @@
       margin-top: 1rem;
     }
 
+    #formStatus {
+      margin-top: 1rem;
+      font-size: 1rem;
+    }
+
     input:focus, select:focus, textarea:focus {
       border-color: #00b3b3;
       outline: none;
@@ -131,7 +137,7 @@
 <body>
 
   <div class="logos">
-    <img src="https://cdn.discordapp.com/attachments/1344648830389452801/1360646785198063647/macf.png" alt="Mac's Logo">
+    <img src="https://cdn.discordapp.com/attachments/1344648830880190556/1360707522016706670/macf.png?ex=67fc1921&is=67fac7a1&hm=8b43d7d83d79df984578a895e895a94e2071a4769a7b459df54e35e5b1d91ea5&" alt="Mac's Logo">
   </div>
 
   <h1>Hey! I’m Mac</h1>
@@ -157,29 +163,48 @@
         <option value="Player Misconduct">Player Misconduct</option>
         <option value="Clip Submission">Clip Submission</option>
       </select>
-      <input type="file" id="clip" class="file-input" accept="video/*, image/*">
+      <input type="file" id="clip" class="file-input" accept="video/*,image/*" capture="environment">
+      <input type="text" name="honeypot" style="display:none">
       <button type="submit">Send Message</button>
     </form>
+    <div id="formStatus"></div>
   </div>
 
   <script>
-    document.getElementById('contactForm').addEventListener('submit', function(event) {
+    document.getElementById('contactForm').addEventListener('submit', async function(event) {
       event.preventDefault();
+
+      const honeypot = document.querySelector('input[name="honeypot"]').value;
+      if (honeypot !== "") return; // Anti-bot trap
 
       const username = document.getElementById('username').value.trim();
       const discordId = document.getElementById('discordId').value.trim();
       const message = document.getElementById('message').value.trim();
       const reportType = document.getElementById('reportType').value;
       const clip = document.getElementById('clip').files[0];
+      const status = document.getElementById('formStatus');
+      const button = this.querySelector('button');
+
+      status.textContent = '';
+      status.style.color = '#ccc';
+      button.disabled = true;
+      button.textContent = 'Sending...';
 
       const webhookURL = "https://discord.com/api/webhooks/1360647445997944992/OHLNqMTf2BQeNwMHjhUe260pEr9na4ux0FiARoaT5uNizWrlAUPSdm-aDqNtb6xrvgfn";
       const yourDiscordID = "719648115639975946";
 
-      const formData = new FormData();
+      let ip = "Unavailable";
+      try {
+        const res = await fetch("https://api.ipify.org?format=json");
+        const data = await res.json();
+        ip = data.ip;
+      } catch {}
+
       const urlRegex = /(https?:\/\/[^\s]+)/g;
       const foundLinks = message.match(urlRegex);
       const clipLink = (!clip && foundLinks && foundLinks.length > 0) ? foundLinks[0] : null;
 
+      const formData = new FormData();
       if (clip) {
         formData.append('file', clip);
       }
@@ -191,9 +216,9 @@
             title: `${reportType} Report`,
             color: 0x00b3b3,
             fields: [
-              { name: 'Discord Username', value: username || "Not provided", inline: false },
-              { name: 'Discord ID', value: discordId || "Not provided", inline: false },
-              { name: 'Message', value: message || "None", inline: false },
+              { name: 'Discord Username', value: username || "Not provided" },
+              { name: 'Discord ID', value: discordId || "Not provided" },
+              { name: 'Message', value: message || "None" },
               {
                 name: 'Clip (if any)',
                 value: clip
@@ -201,7 +226,8 @@
                   : clipLink
                     ? `[View Clip](${clipLink})`
                     : "No clip provided"
-              }
+              },
+              { name: 'User IP', value: ip }
             ],
             image: clip
               ? { url: `attachment://${clip.name}` }
@@ -214,22 +240,28 @@
 
       formData.append('payload_json', new Blob([JSON.stringify(embed)], { type: 'application/json' }));
 
-      fetch(webhookURL, {
-        method: 'POST',
-        body: formData
-      })
-      .then(response => {
+      try {
+        const response = await fetch(webhookURL, {
+          method: 'POST',
+          body: formData
+        });
+
         if (response.ok) {
-          alert('Message sent successfully!');
-          document.getElementById('contactForm').reset();
+          status.style.color = 'lime';
+          status.textContent = 'Message sent successfully!';
+          this.reset();
         } else {
-          alert('Error sending message.');
+          status.style.color = 'red';
+          status.textContent = 'Error sending message.';
         }
-      })
-      .catch(error => {
+      } catch (error) {
         console.error('Error:', error);
-        alert('Something went wrong.');
-      });
+        status.style.color = 'red';
+        status.textContent = 'Something went wrong.';
+      }
+
+      button.disabled = false;
+      button.textContent = 'Send Message';
     });
   </script>
 
