@@ -171,99 +171,72 @@
   </div>
 
   <script>
-    document.getElementById('contactForm').addEventListener('submit', async function(event) {
-      event.preventDefault();
+  document.getElementById('contactForm').addEventListener('submit', function(event) {
+    event.preventDefault();
 
-      const honeypot = document.querySelector('input[name="honeypot"]').value;
-      if (honeypot !== "") return; // Anti-bot trap
+    const username = document.getElementById('username').value.trim();
+    const discordId = document.getElementById('discordId').value.trim();
+    const message = document.getElementById('message').value.trim();
+    const reportType = document.getElementById('reportType').value;
+    const clip = document.getElementById('clip').files[0];
 
-      const username = document.getElementById('username').value.trim();
-      const discordId = document.getElementById('discordId').value.trim();
-      const message = document.getElementById('message').value.trim();
-      const reportType = document.getElementById('reportType').value;
-      const clip = document.getElementById('clip').files[0];
-      const status = document.getElementById('formStatus');
-      const button = this.querySelector('button');
+    const webhookURL = "https://discord.com/api/webhooks/1360647445997944992/OHLNqMTf2BQeNwMHjhUe260pEr9na4ux0FiARoaT5uNizWrlAUPSdm-aDqNtb6xrvgfn";
+    const yourDiscordID = "719648115639975946";
 
-      status.textContent = '';
-      status.style.color = '#ccc';
-      button.disabled = true;
-      button.textContent = 'Sending...';
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+    const foundLinks = message.match(urlRegex);
+    const clipLink = (!clip && foundLinks && foundLinks.length > 0) ? foundLinks[0] : null;
 
-      const webhookURL = "https://discord.com/api/webhooks/1360647445997944992/OHLNqMTf2BQeNwMHjhUe260pEr9na4ux0FiARoaT5uNizWrlAUPSdm-aDqNtb6xrvgfn";
-      const yourDiscordID = "719648115639975946";
+    const formData = new FormData();
 
-      let ip = "Unavailable";
-      try {
-        const res = await fetch("https://api.ipify.org?format=json");
-        const data = await res.json();
-        ip = data.ip;
-      } catch {}
-
-      const urlRegex = /(https?:\/\/[^\s]+)/g;
-      const foundLinks = message.match(urlRegex);
-      const clipLink = (!clip && foundLinks && foundLinks.length > 0) ? foundLinks[0] : null;
-
-      const formData = new FormData();
-      if (clip) {
-        formData.append('file', clip);
-      }
-
-      const embed = {
-        content: `<@${yourDiscordID}>`,
-        embeds: [
-          {
-            title: `${reportType} Report`,
-            color: 0x00b3b3,
-            fields: [
-              { name: 'Discord Username', value: username || "Not provided" },
-              { name: 'Discord ID', value: discordId || "Not provided" },
-              { name: 'Message', value: message || "None" },
-              {
-                name: 'Clip (if any)',
-                value: clip
-                  ? "Attached Below"
-                  : clipLink
-                    ? `[View Clip](${clipLink})`
-                    : "No clip provided"
-              },
-              { name: 'User IP', value: ip }
-            ],
-            image: clip
-              ? { url: `attachment://${clip.name}` }
-              : clipLink && /\.(jpg|jpeg|png|gif|webp)$/i.test(clipLink)
-                ? { url: clipLink }
-                : undefined
-          }
-        ]
-      };
-
-      formData.append('payload_json', new Blob([JSON.stringify(embed)], { type: 'application/json' }));
-
-      try {
-        const response = await fetch(webhookURL, {
-          method: 'POST',
-          body: formData
-        });
-
-        if (response.ok) {
-          status.style.color = 'lime';
-          status.textContent = 'Message sent successfully!';
-          this.reset();
-        } else {
-          status.style.color = 'red';
-          status.textContent = 'Error sending message.';
+    const embedPayload = {
+      content: `<@${yourDiscordID}>`,
+      embeds: [
+        {
+          title: `${reportType} Report`,
+          color: 0x00b3b3,
+          fields: [
+            { name: 'Discord Username', value: username || "Not provided", inline: false },
+            { name: 'Discord ID', value: discordId || "Not provided", inline: false },
+            { name: 'Message', value: message || "None", inline: false },
+            {
+              name: 'Clip',
+              value: clip
+                ? "Attached below"
+                : clipLink
+                  ? `[View Clip](${clipLink})`
+                  : "No clip provided"
+            }
+          ]
         }
-      } catch (error) {
-        console.error('Error:', error);
-        status.style.color = 'red';
-        status.textContent = 'Something went wrong.';
-      }
+      ]
+    };
 
-      button.disabled = false;
-      button.textContent = 'Send Message';
+    formData.append('payload_json', JSON.stringify(embedPayload));
+
+    if (clip) {
+      formData.append('file', clip);
+    }
+
+    fetch(webhookURL, {
+      method: 'POST',
+      body: formData
+    })
+    .then(response => {
+      if (response.ok) {
+        alert('Message sent successfully!');
+        document.getElementById('contactForm').reset();
+      } else {
+        alert('Error sending message.');
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      alert('Something went wrong.');
     });
-  </script>
+  });
+</script>
+
 
 </body>
 </html>
