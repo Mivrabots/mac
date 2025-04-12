@@ -3,31 +3,28 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Mac's Gaming Zone</title>
+  <title>Mac At BayView Roleplay</title>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
   <style>
-    * {
-      margin: 0; padding: 0; box-sizing: border-box;
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: #121212;
+      color: #f0f0f0;
+      font-family: 'Orbitron', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: auto;
+      flex-direction: column;
+      text-align: center;
+      overflow: auto;
     }
-
-  body {
-  background: #121212;
-  color: #f0f0f0;
-  font-family: 'Orbitron', sans-serif;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: auto; /* Allow height to adjust based on content */
-  flex-direction: column;
-  text-align: center;
-  overflow: auto; /* Allow scrolling */
-}
-
 
     h1 {
       font-size: 3rem;
       margin-bottom: 0.5rem;
-      color: #f8b400; /* Gold color for emphasis */
+      color: #f8b400;
     }
 
     p {
@@ -43,7 +40,7 @@
     }
 
     .logos img {
-      width: 150px; /* Adjust logo size */
+      width: 150px;
       margin: 10px;
       border-radius: 10px;
     }
@@ -59,7 +56,7 @@
     .link-btn {
       padding: 0.75rem 1.5rem;
       background: #333;
-      border: 2px solid #66ff66; /* Vibrant green for link buttons */
+      border: 2px solid #66ff66;
       color: #66ff66;
       border-radius: 8px;
       text-decoration: none;
@@ -84,7 +81,7 @@
     .contact-section h2 {
       font-size: 2rem;
       margin-bottom: 1rem;
-      color: #00b3b3; /* Teal for section headers */
+      color: #00b3b3;
     }
 
     .contact-section form input,
@@ -102,17 +99,17 @@
 
     .contact-section form button {
       padding: 0.75rem 1.5rem;
-      background: #f8b400; /* Gold background for submit button */
+      background: #f8b400;
       color: #121212;
       border: none;
       border-radius: 8px;
       cursor: pointer;
       transition: background 0.3s;
-      display: inline-block; /* Ensure it shows up */
+      display: inline-block;
     }
 
     .contact-section form button:hover {
-      background: #ffcc00; /* Slightly lighter gold on hover */
+      background: #ffcc00;
     }
 
     .file-input {
@@ -125,28 +122,22 @@
       margin-top: 1rem;
     }
 
-    /* Border and hover effects for form inputs */
-    input, select, textarea {
-      border-color: #444;
-    }
-
     input:focus, select:focus, textarea:focus {
-      border-color: #00b3b3; /* Teal on focus for inputs */
+      border-color: #00b3b3;
       outline: none;
     }
   </style>
 </head>
 <body>
 
-  <!-- Personal Logo -->
   <div class="logos">
-    <img src="https://cdn.discordapp.com/attachments/1344648830389452801/1360646785198063647/macf.png?ex=67fbe091&is=67fa8f11&hm=4a9625eff6cd356c431f5a96d5021d7803babbb37535368a2362fb2966f33be9&" alt="Mac's Logo">
+    <img src="https://cdn.discordapp.com/attachments/1344648830389452801/1360646785198063647/macf.png" alt="Mac's Logo">
   </div>
 
   <h1>Hey! I’m Mac</h1>
   <p>
     A gamer with a passion for coding and building cool stuff. Whether it’s Discord bots, late-night grind sessions, or creating new tech, I’m always up to something.<br><br>
-    I also run Internal Affairs over at Bayview, where I keep things in check and make sure the streets stay clean. From investigating misconduct to ensuring the community is always operating smoothly, my role is crucial in maintaining a safe and fair environment for everyone involved. Whether I’m catching rule-breakers or handling reports, I’m always making sure Bayview is running like a well-oiled machine.
+    I also run Internal Affairs over at Bayview, where I keep things in check and make sure the streets stay clean.
   </p>
 
   <div class="links">
@@ -154,90 +145,93 @@
     <a class="link-btn" href="https://discord.gg/cmTarTXAYA" target="_blank">Join Bayview Discord</a>
   </div>
 
-  <!-- Contact Section -->
   <div class="contact-section">
     <h2>Contact Me</h2>
     <form id="contactForm">
       <input type="text" id="username" placeholder="Your Discord Name" required>
       <input type="text" id="discordId" placeholder="Your Discord ID" required>
-      <textarea id="message" placeholder="Your Message" rows="4" required></textarea>
-      
-      <!-- Report Type Dropdown -->
+      <textarea id="message" placeholder="Your Message (Paste clip link here if no file)" rows="4" required></textarea>
       <select id="reportType" required>
         <option value="General Report">General Report</option>
         <option value="Bug Report">Bug Report</option>
         <option value="Player Misconduct">Player Misconduct</option>
         <option value="Clip Submission">Clip Submission</option>
       </select>
-      
-      <!-- File Upload for Clips -->
       <input type="file" id="clip" class="file-input" accept="video/*, image/*">
-
       <button type="submit">Send Message</button>
     </form>
   </div>
 
   <script>
-  document.getElementById('contactForm').addEventListener('submit', function(event) {
-    event.preventDefault();
-    
-    const username = document.getElementById('username').value;
-    const discordId = document.getElementById('discordId').value;
-    const message = document.getElementById('message').value;
-    const reportType = document.getElementById('reportType').value;
-    const clip = document.getElementById('clip').files[0];
+    document.getElementById('contactForm').addEventListener('submit', function(event) {
+      event.preventDefault();
 
-    const webhookURL = "https://discord.com/api/webhooks/1360647445997944992/OHLNqMTf2BQeNwMHjhUe260pEr9na4ux0FiARoaT5uNizWrlAUPSdm-aDqNtb6xrvgfn";
-    const yourDiscordID = "719648115639975946"; // Your Discord ID for ping
+      const username = document.getElementById('username').value.trim();
+      const discordId = document.getElementById('discordId').value.trim();
+      const message = document.getElementById('message').value.trim();
+      const reportType = document.getElementById('reportType').value;
+      const clip = document.getElementById('clip').files[0];
 
-    const formData = new FormData();
+      const webhookURL = "https://discord.com/api/webhooks/1360647445997944992/OHLNqMTf2BQeNwMHjhUe260pEr9na4ux0FiARoaT5uNizWrlAUPSdm-aDqNtb6xrvgfn";
+      const yourDiscordID = "719648115639975946";
 
-    // If file exists, append it
-    if (clip) {
-      formData.append('file', clip);
-    }
+      const formData = new FormData();
+      const urlRegex = /(https?:\/\/[^\s]+)/g;
+      const foundLinks = message.match(urlRegex);
+      const clipLink = (!clip && foundLinks && foundLinks.length > 0) ? foundLinks[0] : null;
 
-    // Prepare embed
-    const embed = {
-      content: `<@${yourDiscordID}>`,
-      embeds: [
-        {
-          title: `${reportType} Report`,
-          description: message,
-          fields: [
-            { name: 'Discord Username:', value: username },
-            { name: 'Discord ID:', value: discordId },
-            { name: 'Type of Report:', value: reportType },
-            { name: 'Clip (if any):', value: clip ? `Attached Below` : "No clip uploaded" }
-          ],
-          image: clip ? { url: `attachment://${clip.name}` } : undefined // Show image/video if possible
-        }
-      ]
-    };
-
-    // Add embed JSON to form data
-    formData.append('payload_json', new Blob([JSON.stringify(embed)], { type: 'application/json' }));
-
-    // Send to Discord webhook
-    fetch(webhookURL, {
-      method: 'POST',
-      body: formData
-    })
-    .then(response => {
-      if (response.ok) {
-        alert('Message sent successfully!');
-        document.getElementById('contactForm').reset();
-      } else {
-        alert('There was an error sending the message.');
+      if (clip) {
+        formData.append('file', clip);
       }
-    })
-    .catch(error => {
-      console.error('Error:', error);
-      alert('Something went wrong.');
-    });
-  });
-</script>
 
+      const embed = {
+        content: `<@${yourDiscordID}>`,
+        embeds: [
+          {
+            title: `${reportType} Report`,
+            color: 0x00b3b3,
+            fields: [
+              { name: 'Discord Username', value: username || "Not provided", inline: false },
+              { name: 'Discord ID', value: discordId || "Not provided", inline: false },
+              { name: 'Message', value: message || "None", inline: false },
+              {
+                name: 'Clip (if any)',
+                value: clip
+                  ? "Attached Below"
+                  : clipLink
+                    ? `[View Clip](${clipLink})`
+                    : "No clip provided"
+              }
+            ],
+            image: clip
+              ? { url: `attachment://${clip.name}` }
+              : clipLink && /\.(jpg|jpeg|png|gif|webp)$/i.test(clipLink)
+                ? { url: clipLink }
+                : undefined
+          }
+        ]
+      };
+
+      formData.append('payload_json', new Blob([JSON.stringify(embed)], { type: 'application/json' }));
+
+      fetch(webhookURL, {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => {
+        if (response.ok) {
+          alert('Message sent successfully!');
+          document.getElementById('contactForm').reset();
+        } else {
+          alert('Error sending message.');
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('Something went wrong.');
+      });
+    });
+  </script>
 
 </body>
 </html>
